@@ -1,11 +1,11 @@
 #include <iostream>
 #include <string>
 
-#include "db.h"
 #include "cli.h"
+#include "db.h"
 
 int main() {
-    DB db;
+    DB db(50);
     CLI cli(db);
     cli.run();
     return 0;

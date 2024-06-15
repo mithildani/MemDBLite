@@ -1,14 +1,17 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
 
 class DB {
 public:
+    DB(size_t max_memory);
+    ~DB();
+
     void set(const std::string &key, const std::string &value);
-    void get(const std::string &key) const;
+    void get(const std::string &key);
     void del(const std::string &key);
 
 private:
-    std::unordered_map<std::string, std::string> store_;
+    struct DBImpl;
+    DBImpl* dbImpl;
 };
