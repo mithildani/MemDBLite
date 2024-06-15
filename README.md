@@ -1,4 +1,4 @@
-# MemDBLite: An In-Memory Key-Value Store
+# MemDBLite: An In-Memory Key-Value Database
 
 
 **MemDBLite** is a minimalistic yet powerful in-memory key-value database implemented in C++.
