@@ -14,6 +14,10 @@ size_t DB::DBImpl::calculate_memory_usage(const std::string& key, const std::str
 
 void DB::DBImpl::set(const std::string& key, const std::string& value) {
     size_t new_memory = calculate_memory_usage(key, value);
+    if (new_memory > max_memory_) {
+        std::cout << "[Error] Key-Value Size is larger than MAX_MEMORY" << std::endl;
+        return;
+    }
 
     if (store_.find(key) == store_.end()) {
         run_eviction(new_memory);
@@ -43,7 +47,7 @@ void DB::DBImpl::set(const std::string& key, const std::string& value) {
 void DB::DBImpl::get(const std::string& key) {
     auto it = store_.find(key);
     if (it != store_.end()) {
-        std::cout << it->second << "\n";
+        std::cout << it->second << std::endl;
         auto clock_it = key_to_clock_index_.find(key);
         if (clock_it != key_to_clock_index_.end()) {
             reference_bits_[clock_it->second] = true;
@@ -83,7 +87,7 @@ void DB::DBImpl::evict(const std::string& key) {
 
 size_t DB::DBImpl::find_evict_candidate() {
     while (true) {
-        // check if reference bit is set to false and also if key is empty. 
+        // check if reference bit is set to false and also if key is empty.
         // key can be empty if memory limit is reached before clock size is reached
         if (!reference_bits_[clock_hand_] && !keys_[clock_hand_].empty()) {
             return clock_hand_;
